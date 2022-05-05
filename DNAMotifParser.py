@@ -385,7 +385,7 @@ def protdnakorr_adaptation():
 # find_regions()
 #
 # aligning_dna()
-
+#
 # lengthening()
-
-protdnakorr_adaptation()
+#
+#protdnakorr_adaptation()
