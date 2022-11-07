@@ -1,7 +1,5 @@
 # CRtagFinder
 
-# Database Query Tool (DQT)
-
 ## Table of Contents
 * [General Overview](#General-Overview)
 * [Prerequisites](#Prerequisites)
