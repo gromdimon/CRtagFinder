@@ -1,110 +1,71 @@
 # CRtagFinder
-CRTagFinder is an automated pipeline for finding critical residues (CR) in sigma-factors proteins.
-Normal description and better code will be provided soon.
 
 # Database Query Tool (DQT)
 
 ## Table of Contents
-* [Workflow Overview](#Workflow-Overview)
-* [Required Files](#Required-Files)
-* [Workflow Execution](#Workflow-Execution)
-* [Adding Custom Databases](#Adding-Custom-Databases)
+* [General Overview](#General-Overview)
+* [Prerequisites](#Prerequisites)
+* [Skript Execution](#Skript Execution)
 * [Additional Information](#Additional-Information)
 
-## Workflow Overview 
-The Databse Query Tool is used to compare the contents of the reference databases used by various taxonomic classification tools. Specifically, since NCBI taxonomy is constantly being updated and different taxonomic classification tools use different databases, not all tools have the same reference organisms in their database. Thus, comparing outputs from one tool to another requires accounting for differences in the presence of organisms in their respective reference databases. If a taxonomic classification tool does not report an expected species in a metagenome, the DQT allows users to quickly query whether or not that species was present in the tool's reference database. The DQT allows the user to input one or more NCBI taxonomy IDs (taxids) and output a list of the databases that contain that taxid or its ancestor. While taxons from any level can be queried, this tool was specifically designed to work with species-level taxons. 
+## General Overview 
+CRTagFinder is an automated pipeline for finding critical residues (CR) in sigma-factors proteins. This skript is essential for semi-automated pipeline
+of bacterial genomes annotation in [SigmoID](https://github.com/nikolaichik/SigmoID) distributive. One of the essential prerequisites for this pipeline
+is custom database with Transkription Factors and their critical residues tags. CR-tag is an order of positions of amino-acid residues within DNA binding
+domain, which direktly contact DNA bases. For the construction of database the data from this script was used.
 
-![](https://github.com/signaturescience/metagenomics-wiki/blob/master/documentation/figures/DQT%20v1.png)
-
-## Required Files
-If you have not already, you will need to clone the MetScale repository and activate your `metscale` environment (see [Install](https://github.com/signaturescience/metscale/wiki/02.-Install)) before proceeding:
-
-```sh
-[user@localhost ~]$ source activate metscale 
-
-(metscale)[user@localhost ~]$ cd metscale/scripts
-
-```
+## Prerequisites
+For running this script some third-side packages and applications are required. They are: 
+-[Biopython](https://biopython.org/)
+-[HMMER](http://hmmer.org/)
+HMMER is a complete application, that has to be installed and setted up. See hints [here](http://hmmer.org/download.html).
 
 ### Input Files
 
-If you ran the MetScale installation correctly, the following files and directories should be present in the `metscale/scripts` directory.
+You also need a "download.fa" file in the directory where the script is located. This file should consist of protein sequences in fasta format with
+UniProt identificators.
 
-## Workflow Execution
-![](https://github.com/signaturescience/metscale/blob/master/scripts/DQT%20(Hackathon%202022).png)
-
-### Quick Start:
-After cloning the MetScale repository, some configuration is necessary before use. It can be done automatically using default settings by running the command:
+Example:
 ```
-python3 query_tool.py --setup
+>D0LGP0_HALO1/3-191
+RRERALIRKLRDRDERAFRELVTQFGDRIFNLTFRMLGSREEAEDISQEVFITVFKSIDS
+FRGDAKFSTWMYRIAVNHCKNRIKYLARRHDRSRDEYDDMSGQQQAAGATAVPSTPARPD
+LQLEGVQLEQIMQRCIASLDEEHRVLIVLRDIEDLSYEEICTITNLPTGTVKSRLHRARL
+ALRKKMLTK
+>A0A5B8XTY0_9DELT/1-188
+MSLSDRKLVRNLRRRDEDAFRELVRVYQHRVFNIVYRILGDREEAEDVAQEVFVAIFKHI
+DSFRGDAKFSTWVYRIATNQARNRLKYHARRHRRDHQNYEDAPESAHQDSDFAGTIPQPE
+DAVLGRELEKIIQEGLAELGEIHRTIIVLRDVEHLSYQEIAEIVELPEGTVKSRLFRARV
+ALKEYVEK
+>Q2IIH1_ANADE/32-211
+AWTRSAARGDRQAFSRLVDLHKRTVFALCVRLLRDQDEAQDAAQEAFARAYASLAAFDPS
+QPFAPWLLRIARNHCLDVIRRRLPQAQRVELDAAPEDGAPRDLADPDAPRGDDALERREL
+ARTLEAAVAALPANYREVVHLFHVEHLSYKEIAAAMDVPIGTVMTWLHRARARLKATLDA
 ```
-That will populate the setting `working_folder` in the default config file with the home folder of the DQT. Following that, the tool should be ready for use.
 
-### Detailed Settings
-The `--setup` command will automatically set the three important paths the DQT needs to run:
-* 1) The repository of taxon coverage information for the various MetScale tools
-* 2) The full reference taxonomy maintained by NCBI. 
-* 3) The working folder for any outputs that are provided. 
-
-## Usage 
-
-### Taxon ID Querying
-
-All RefSeq versions up to v98 can be included in the query by adding the flag `--all_refseq_versions`. 
-
-#### Details & Example
- will run for only this taxon. Additionally, the output report will have a slightly different format than for multiple IDs.
-
-## Output
-To understand how to interpret the output of the DQT we will use the example query from the previous section:
-
-## Adding Custom Databases
-
-If a database of interest is not currently present in the DQT you can easily add it to the pool! A mock database `example_db.txt` is included with MetScale and we will use this file to demonstrate how to add a database.
-
-### Database Format
-The database must be formatted as follows:
-
-### Adding The Database
-
-The DQT uses a configuration file `dbqt_config` to organize databate inclusion. If you ran the DQT `--setup` your config file should look like:
-
-### Inspection and Import
-Now that we have included all our information in the config file, we will check to verify the DQT recognizes our new database. We will run the inspection flag `-CMO` to do this.
+## Skript Execution
+### Quick Mode:
+You have to copy only script itself [CRTagExtractor](https://github.com/gromdimon/CRtagFinder/blob/main/CRTagExtractor.py) and move 'download.fa' file in
+the same directory. The execusion will be performed by running skript with python command:
 ```
-(metscale) :~$ python3 query_tool.py -BCD
-Summary of sources to be imported: (count = 1)
-   example      /path/to/metscale/scripts/databases/example_db.txt
-[query_tool.py (1551)] INFO: Containment Dictionary Summary (all_refseq = False)
-   ***
-    # Databases: 106 (98 RefSeq, 8 other)
-  Latest RefSeq: v98
-
-Main Databases:
- Database Name                        # Taxa  Date Parsed
- ---------------------------------  --------  --------------------
- minikraken_20171019_8GB               10624  2020-02-24 15:56:01
- minikraken2_v2_8GB_201904_UPDATE      21112  2020-02-24 15:56:01
- kaiju_db_nr_euk                      224818  2020-02-24 15:56:01
- NCBI_nucl_wgs                         74902  2020-04-11 14:16:57
- NCBI_nucl_gb                        1893626  2020-04-11 14:20:05
- MTSV_Oct-28-2019                      24422  2020-05-19 02:28:52
- metaphlan3                            13519  2021-07-23 08:46:51
- example                                   7  2021-08-04 09:21:15
- RefSeq_v98                            98406  2020-02-24 15:56:00
-
-
-[query_tool.py (1110)] INFO: Saving containment dictionary to /path/to/metscale/scripts/containment_dict.json
+python3 CRTagExtractor.py
 ```
-You should see the above output now displaying the new pool of databases in the DQT. Our `example` database is there! The process is now complete. You can replicate all these steps with as many custom databases as you would like. 
+
+### Developer mode:
+After cloning the CRtagFinder repository you can run quick skript, but also debug some other files.
+```
+python3 CRTagExtractor.py
+```
+
+### Results
+After all you will have many files in different formats, with different information etc. For purposes of SigmoID we handled special final files
+"final_r2.txt" and "final_r4.txt". They are made in special table for [ProtDnaKorr](http://bioinf.fbb.msu.ru/Prot-DNA-Korr/) application. This app made
+special heatmaps, that illustrated correlations. With help of it we constructed CR-tags and protein database.
+
 
 ## Additional Information
 
-A complete list of the commands and options is available using the `--help` flag at the command line:
+Should be ready for CPU consumption, Internet stability and time! This script is not well-optimised for big data, but works actually with it..
+So be ready!
 
-```
-python3 query_tool.py --help
-```
 
-### Logging Options:
-Options related to how much information the program prints while running:
