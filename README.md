@@ -3,7 +3,7 @@
 ## Table of Contents
 * [General Overview](#General-Overview)
 * [Prerequisites](#Prerequisites)
-* [Skript Execution](#Skript Execution)
+* [Skript Execution](#Skript-Execution)
 * [Additional Information](#Additional-Information)
 
 ## General Overview 
