@@ -1,4 +1,5 @@
 # CRtagFinder
+![header](images/header.jpg)
 
 ## Table of Contents
 * [General Overview](#General-Overview)
@@ -98,6 +99,7 @@ After all you will have many files in different formats, with different informat
 "final_r2.txt" and "final_r4.txt". They are made in special table for [ProtDnaKorr](http://bioinf.fbb.msu.ru/Prot-DNA-Korr/) application. This app made
 special heatmaps, that illustrated correlations. With help of it we constructed CR-tags and protein database.
 
+![promoters](images/promoters.png)
 
 ## Additional Information
 
